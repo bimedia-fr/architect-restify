@@ -61,7 +61,7 @@ module.exports = function setup(options, imports, register) {
 
     // register routes 
     rest.get('/catalogue', function (req, res, next) {
-        res.write('{'message':'hello, world'}');
+        res.write("{'message':'hello, world'}");
 	res.end();
     });
     
