@@ -1,0 +1,33 @@
+{
+  "name": "architect-restify",
+  "version": "0.0.1",
+  "description": "expose restify server as architect plugin",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "vows --spec test/test-*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bimedia-fr/architect-restify.git"
+  },
+  "keywords": [
+    "architect",
+    "restify"
+  ],
+  "author": "jerome creignou",
+  "license": "Apache License 2.0",
+  "bugs": {
+    "url": "https://github.com/bimedia-fr/architect-restify/issues"
+  },
+  "plugin": {
+    "provides": [
+      "rest"
+    ]
+  },
+  "dependencies": {
+    "restify": "~2.6.3"
+  },
+  "devDependencies": {
+    "vows": "~0.7.0"
+  }
+}
