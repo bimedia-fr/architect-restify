@@ -19,15 +19,15 @@
   "bugs": {
     "url": "https://github.com/bimedia-fr/architect-restify/issues"
   },
-  "plugin": {
-    "provides": [
-      "rest"
-    ]
-  },
   "dependencies": {
     "restify": "~2.6.3"
   },
   "devDependencies": {
     "vows": "~0.7.0"
+  },
+  "plugin": {
+    "provides": [
+      "rest"
+    ]
   }
 }
