@@ -8,6 +8,15 @@ expose restify server *rest* as architect plugin.
 ```sh
 npm install --save architect-restify
 ```
+### Config Format 
+
+```js
+{
+  "packagePath": "architect-restify",
+  port: process.env.PORT || 8080,
+  host: process.env.IP || "0.0.0.0"
+}
+```
 
 ### Usage
 
