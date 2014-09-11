@@ -24,12 +24,13 @@ module.exports = function startup(options, imports, register) {
     server.use(restify.acceptParser(server.acceptable));
     server.use(restify.queryParser());
     server.use(restify.bodyParser({ mapParams: false }));
+    server.use(restify.gzipResponse());
 
     server.listen(port, host, function (err) {
         if (err) {
             return register(err);
         }
-        console.log("HTTP server listening on http://%s%s/", options.host || "localhost", port === 80 ? "" : ":" + port);
+        //console.log("HTTP server listening on http://%s%s/", options.host || "localhost", port === 80 ? "" : ":" + port);
         register(null, {
             // When a plugin is unloaded, it's onDestruct function will be called if there is one.
             onDestruct: function (callback) {
