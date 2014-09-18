@@ -1,32 +1,43 @@
 /*jslint node : true, nomen: true, plusplus: true, vars: true, eqeq: true,*/
 "use strict";
 
-module.exports = function startup(options, imports, register) {
-    var restify = require('restify');
+var restify = require('restify');
 
-    // Process options and default values
-    var port = options.port;
-    var host = options.host || "0.0.0.0";
-    var on404 = options.on404 || function (req, res) {
-            res.writeHead(404);
-            res.end("Not Found\n");
-        };
-    var on500 = options.on500 || function (req, res, err) {
-            res.writeHead(500);
-            res.end(err.stack);
-        };
-    
-    var server = restify.createServer({
-        name: options.name || 'restify-server',
-        version: options.name || '0.0.1'
+var DEFAULT_PLUGINS = {
+    queryParser: {},
+    bodyParser : { mapParams: false },
+    gzipResponse : {}
+};
+
+function registerPlugins(server, plugins) {
+    Object.keys(DEFAULT_PLUGINS).forEach(function (name) {
+        if (!plugins[name]) {
+            plugins[name] = DEFAULT_PLUGINS[name];
+        }
     });
+    Object.keys(plugins || {}).forEach(function (name) {
+        if (restify[name]) {
+            server.use(restify[name](plugins[name]));
+        }
+    });
+}
     
-    server.use(restify.acceptParser(server.acceptable));
-    server.use(restify.queryParser());
-    server.use(restify.bodyParser({ mapParams: false }));
-    server.use(restify.gzipResponse());
 
-    server.listen(port, host, function (err) {
+
+module.exports = function startup(options, imports, register) {
+
+    var config = {
+        name: options.name ||  'restify-server',
+        version: options.name || '0.0.1'
+    };
+    
+    var server = restify.createServer(config);
+
+    server.use(restify.acceptParser(server.acceptable));
+
+    registerPlugins(server, options.plugins || {});
+
+    server.listen(options.port, options.host || "0.0.0.0", function (err) {
         if (err) {
             return register(err);
         }
