@@ -1,6 +1,6 @@
 {
   "name": "architect-restify",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "expose restify server as architect plugin",
   "main": "src/index.js",
   "scripts": {
@@ -20,7 +20,7 @@
     "url": "https://github.com/bimedia-fr/architect-restify/issues"
   },
   "dependencies": {
-    "restify": "~2.6.3"
+    "restify": "^2.8.2"
   },
   "devDependencies": {
     "vows": "~0.7.0"
