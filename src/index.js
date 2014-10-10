@@ -21,34 +21,35 @@ function registerPlugins(server, plugins) {
         }
     });
 }
-    
-
 
 module.exports = function startup(options, imports, register) {
 
     var config = {
         name: options.name ||  'restify-server',
-        version: options.name || '0.0.1'
+        version: options.version || '0.0.1'
     };
     
     var server = restify.createServer(config);
-
     server.use(restify.acceptParser(server.acceptable));
 
     registerPlugins(server, options.plugins || {});
 
-    server.listen(options.port, options.host || "0.0.0.0", function (err) {
+    function listenCb(err) {
         if (err) {
             return register(err);
         }
-        //console.log("HTTP server listening on http://%s%s/", options.host || "localhost", port === 80 ? "" : ":" + port);
         register(null, {
-            // When a plugin is unloaded, it's onDestruct function will be called if there is one.
             onDestruct: function (callback) {
                 server.close(callback);
             },
             rest: server
         });
-    });
+    }
 
+    if (options.socket) {
+        server.listen(options.socket, listenCb);
+        return;
+    }
+
+    server.listen(options.port, options.host || "0.0.0.0", listenCb);
 };
