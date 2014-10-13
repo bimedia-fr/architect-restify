@@ -47,7 +47,10 @@ module.exports = function startup(options, imports, register) {
     }
 
     if (options.socket) {
-        server.listen(options.socket, listenCb);
+        var fs = require('fs');
+        fs.unlink(options.socket, function () {//remove any existing socket
+            server.listen(options.socket, listenCb);
+        });
         return;
     }
 
