@@ -1,12 +1,16 @@
 /*jslint node : true, nomen: true, plusplus: true, vars: true, eqeq: true,*/
 "use strict";
+var fs = require('fs'),
+    net = require('net'),
+    restify = require('restify');
 
-var restify = require('restify');
 
 var DEFAULT_PLUGINS = {
     queryParser: {},
-    bodyParser : { mapParams: false },
-    gzipResponse : {}
+    bodyParser: {
+        mapParams: false
+    },
+    gzipResponse:  {}
 };
 
 function registerPlugins(server, plugins) {
@@ -15,7 +19,7 @@ function registerPlugins(server, plugins) {
             plugins[name] = DEFAULT_PLUGINS[name];
         }
     });
-    Object.keys(plugins || {}).forEach(function (name) {
+    Object.keys(plugins  || {}).forEach(function (name) {
         if (restify[name]) {
             server.use(restify[name](plugins[name]));
         }
@@ -28,7 +32,7 @@ module.exports = function startup(options, imports, register) {
         name: options.name ||  'restify-server',
         version: options.version || '0.0.1'
     };
-    
+
     var server = restify.createServer(config);
     server.use(restify.acceptParser(server.acceptable));
 
@@ -46,13 +50,31 @@ module.exports = function startup(options, imports, register) {
         });
     }
 
+    server.once('listening', listenCb);
+
     if (options.socket) {
-        var fs = require('fs');
-        fs.unlink(options.socket, function () {//remove any existing socket
-            server.listen(options.socket, listenCb);
+        server.listen(options.socket);
+        // double-check EADDRINUSE
+        server.on('error', function (e) {
+            if (e.code !== 'EADDRINUSE') {
+                register(e);
+            }
+            net.connect({
+                path: options.socket
+            }, function () {
+                // really in use: re-throw
+                register(e);
+            }).on('error', function (e) {
+                if (e.code !== 'ECONNREFUSED') {
+                    register(e);
+                }
+                // not in use: delete it and re-listen
+                fs.unlinkSync(options.socket);
+                server.listen(options.socket);
+            });
         });
         return;
     }
 
-    server.listen(options.port, options.host || "0.0.0.0", listenCb);
+    server.listen(options.port, options.host || "0.0.0.0");
 };
