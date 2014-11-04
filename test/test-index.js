@@ -12,7 +12,7 @@ vows.describe('architect-restify').addBatch({
                 socket: '/tmp/architect-restify.sock'
             }, {}, this.callback);
         },
-        'and retur a valid object': function (err, res) {
+        'and return a valid object': function (err, res) {
             assert.ok(res);
         }
     }
