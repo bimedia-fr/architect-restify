@@ -1,6 +1,6 @@
 {
   "name": "architect-restify",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "expose restify server as architect plugin",
   "main": "lib/index.js",
   "scripts": {
