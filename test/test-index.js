@@ -3,7 +3,7 @@
 
 var assert = require('assert'),
     vows = require('vows'),
-    restify = require('../src/index');
+    restify = require('../lib/index');
 
 vows.describe('architect-restify').addBatch({
     'can create a server listening on an unix socket':  {
