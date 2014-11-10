@@ -1,8 +1,8 @@
 {
   "name": "architect-restify",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "expose restify server as architect plugin",
-  "main": "src/index.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "vows --spec test/test-*.js"
   },
@@ -14,7 +14,10 @@
     "architect",
     "restify"
   ],
-  "author": "jerome creignou",
+  "author": "Jerome Creignou",
+  "contributors": [
+        "Guillaume Chauvet"
+    ],
   "license": "Apache License 2.0",
   "bugs": {
     "url": "https://github.com/bimedia-fr/architect-restify/issues"
