@@ -17,6 +17,9 @@
 var assert = require('assert');
 var vows = require('vows');
 var restify = require('../lib/index');
+var http = require('http');
+
+var count = 0;
 
 vows.describe('architect-restify').addBatch({
     'can create a server listening on an unix socket':  {
@@ -28,6 +31,39 @@ vows.describe('architect-restify').addBatch({
         'and return a valid object': function (err, res) {
             assert.ok(res);
             assert.isObject(res);
+        }
+    }
+}).addBatch({
+    'can create a server listening on port 8254':  {
+        topic: function () {
+            restify({
+                port: '8254',
+                plugins: {
+                    myPlugin: function () {
+                        return function (req, res, next) {
+                            count++;
+                            next();
+                        };
+                    }
+                }
+            }, {}, this.callback);
+        },
+        'and return a valid object': function (err, rest) {
+            assert.isObject(rest);
+
+        },
+        'and test server': {
+            topic: function () {
+                http.request('http://localhost:8254', function (err, res) {
+                    assert.equal(count, 1);
+                });
+            },
+            teardown: function (server) {
+                server.close(function () {
+                    console.log('server closed');
+                });
+
+            }
         }
     }
 }).exportTo(module);
