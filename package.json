@@ -1,7 +1,7 @@
 {
   "name": "architect-restify",
-  "version": "0.3.0",
-  "description": "expose restify server as architect plugin",
+  "version": "0.3.1",
+  "description": "Expose restify server as architect plugin",
   "main": "lib/index.js",
   "scripts": {
     "test": "vows --spec test/test-*.js"
