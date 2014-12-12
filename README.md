@@ -86,4 +86,6 @@ module.exports.consumes=['rest'];
 * port : tcp port to listent to
 * host : host to listen to
 * socket: unix socket to listen
+* interface : network interface name to listen to (must match `os.networkInterfaces`)
+* family : interface address family to listen to (with `interface`)
 * plugins: a hash containing either a [restify bundled plugin](http://mcavage.me/node-restify/#Bundled-Plugins) or a function that returns a plugin.
