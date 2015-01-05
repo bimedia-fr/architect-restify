@@ -18,6 +18,23 @@ npm install --save architect-restify
 }
 ```
 
+Or With plugins :
+
+```js
+{
+  packagePath: "architect-restify",
+  port: process.env.PORT || 8080,
+  host: process.env.IP || "0.0.0.0"
+  plugins: {
+    CORS:  {
+      origins: ['http://localhost:8080']
+    }
+  }
+}
+```
+
+
+
 ### Usage
 
 Boot [Architect](https://github.com/c9/architect) :
@@ -47,22 +64,7 @@ module.exports = [{
 }, './routes'];
 ```
  
-Consume *rest* plugin in your `./routes/package.json` :
-
-```js
-{
-  "name": "routes",
-  "version": "0.0.1",
-  "main": "index.js",
-  "private": true,
-
-  "plugin": {
-    "consumes": ["rest"]
-  }
-}
-```
-
-Eventually register your routes in `./routes/index.js` :
+And register your routes in `./routes/index.js` :
 
 ```js
 module.exports = function setup(options, imports, register) {
@@ -76,4 +78,14 @@ module.exports = function setup(options, imports, register) {
     
     register();
 };
+// Consume rest plugin
+module.exports.consumes=['rest'];
 ```
+
+### Options
+* port : tcp port to listent to
+* host : host to listen to
+* socket: unix socket to listen
+* interface : network interface name to listen to (must match `os.networkInterfaces`)
+* family : interface address family to listen to (with `interface`)
+* plugins: a hash containing either a [restify bundled plugin](http://mcavage.me/node-restify/#Bundled-Plugins) or a function that returns a plugin.
