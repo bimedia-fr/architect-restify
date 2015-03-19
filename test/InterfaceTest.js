@@ -13,28 +13,26 @@
  * limitations under the License.
  */
 "use strict";
-
-var assert = require('assert');
-var vows = require('vows');
+var test = require('unit.js');
 var iface = require('../lib/interfaces');
+var os = require('os');
 
-var listening;
+describe('[ARCHITECT][RESTIFY]', function () {
 
-var server = {
-    listen : function (port, host) {
-        listening = host;
-    }
-};
+    describe('[INTERFACE]', function () {
 
-vows.describe('interface listener').addBatch({
-    'can make a server listening on specific interface':  {
-        topic: function () {
-            iface.listen(server, { 'interface' : 'lo', port : 8080 }, this.callback);
-        },
-        'and return a valid object': function (err, res) {
-            assert.ok(res);
-            console.log('listening ' + listening);
-            assert.equal(listening, '127.0.0.1');
-        }
-    }
-}).exportTo(module);
+        it('Listener', function (done) {
+            iface.listen({
+                listen: function (port, host) {
+                    test.string(host).is('127.0.0.1');
+                }
+            }, {'interface': Object.keys(os.networkInterfaces())[0], port: 0}, function (err, res) {
+                test.assert.ifError(err);
+                test.object(res).isNotEmpty();
+                done();
+            });
+        });
+
+    });
+
+});
