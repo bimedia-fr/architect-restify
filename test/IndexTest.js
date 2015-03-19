@@ -40,7 +40,7 @@ describe('[ARCHITECT][RESTIFY]', function () {
     });
 
     describe('[PORT]', function () {
-        it('Create a server ', function (done) {
+        it('Test a custom plugin', function (done) {
             server = module({
                 plugins: {
                     myPlugin: function () {
@@ -61,6 +61,40 @@ describe('[ARCHITECT][RESTIFY]', function () {
                 });
 
                 http.get({
+                    port: server.address().port
+                }, function (res) {
+                    test.number(res.statusCode).is(404);
+                })
+                .on('error', function (err) {
+                    test.assert.ifError(err);
+                });
+            });
+
+            test.object(server).isNotEmpty();
+        });
+        
+        it('Test a replacement plugin', function (done) {
+            server = module({
+                plugins: {
+                    queryParser: function () {
+                        return function (req, res, next) {
+                            done();
+                            next();
+                        };
+                    }
+                }
+            }, {}, function (err) {
+
+                test.assert.ifError(err);
+
+                server.get({
+                    url: '/'
+                }, function (req, res, next) {
+                    next();
+                });
+
+                http.get({
+                    path: '/?foo=bar',
                     port: server.address().port
                 }, function (res) {
                     test.number(res.statusCode).is(404);
