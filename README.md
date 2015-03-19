@@ -1,4 +1,4 @@
-architect-restify
+architect-restify [![build status](https://secure.travis-ci.org/bimedia-fr/architect-restify.png)](https://travis-ci.org/bimedia-fr/architect-restify)
 =================
 
 expose restify server *rest* as architect plugin. 
