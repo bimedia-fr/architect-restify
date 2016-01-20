@@ -18,11 +18,12 @@
   "contributors": [
     "Guillaume Chauvet"
   ],
-  "license": "Apache License 2.0",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/bimedia-fr/architect-restify/issues"
   },
   "dependencies": {
+    "listen-interface": "^1.0.1",
     "lodash": "^3.5.0",
     "restify": "^2.8.2"
   },
