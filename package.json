@@ -25,7 +25,7 @@
   "dependencies": {
     "listen-interface": "^1.0.1",
     "lodash": "^3.5.0",
-    "restify": "^2.8.2",
+    "restify": "^2.8.5",
     "unix-listen": "^0.1.1"
   },
   "devDependencies": {
