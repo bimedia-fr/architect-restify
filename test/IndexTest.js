@@ -40,7 +40,7 @@ describe('[ARCHITECT][RESTIFY]', function () {
     });
 
     describe('[PORT]', function () {
-        it('Test a custom plugin', function (done) {
+        it('Test a custom plugin (old fashion)', function (done) {
             server = module({
                 plugins: {
                     myPlugin: function () {
@@ -49,6 +49,78 @@ describe('[ARCHITECT][RESTIFY]', function () {
                             next();
                         };
                     }
+                }
+            }, {}, function (err) {
+
+                test.assert.ifError(err);
+
+                server.get({
+                    url: '/'
+                }, function (req, res, next) {
+                    next();
+                });
+
+                http.get({
+                    port: server.address().port
+                }, function (res) {
+                    test.number(res.statusCode).is(404);
+                })
+                .on('error', function (err) {
+                    test.assert.ifError(err);
+                });
+            });
+
+            test.object(server).isNotEmpty();
+        });
+        
+        it('Test a custom plugin (new fashion)', function (done) {
+            server = module({
+                plugins: {
+                    prehandlers: {},
+                    handlers: {
+                        myPlugin: function () {
+                            return function (req, res, next) {
+                                done();
+                                next();
+                            };
+                        }
+                    }
+                }
+            }, {}, function (err) {
+
+                test.assert.ifError(err);
+
+                server.get({
+                    url: '/'
+                }, function (req, res, next) {
+                    next();
+                });
+
+                http.get({
+                    port: server.address().port
+                }, function (res) {
+                    test.number(res.statusCode).is(404);
+                })
+                .on('error', function (err) {
+                    test.assert.ifError(err);
+                });
+            });
+
+            test.object(server).isNotEmpty();
+        });
+        
+        it('Test a custom plugin (prehandler)', function (done) {
+            server = module({
+                plugins: {
+                    prehandlers: {
+                        myPlugin: function () {
+                            return function (req, res, next) {
+                                done();
+                                next();
+                            };
+                        }
+                    },
+                    handlers: {}
                 }
             }, {}, function (err) {
 

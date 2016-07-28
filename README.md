@@ -18,7 +18,25 @@ npm install --save architect-restify
 }
 ```
 
-Or With plugins :
+Or With plugins (new fashion):
+
+```js
+{
+  packagePath: "architect-restify",
+  port: process.env.PORT || 8080,
+  host: process.env.IP || "0.0.0.0"
+  plugins: {
+    prehandlers: {},
+    handlers: {
+      CORS:  {
+        origins: ['http://localhost:8080']
+      }
+    }
+  }
+}
+```
+
+Or With plugins (old fashion):
 
 ```js
 {
