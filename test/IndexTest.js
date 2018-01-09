@@ -40,7 +40,7 @@ describe('[ARCHITECT][RESTIFY]', function () {
     });
 
     describe('[PORT]', function () {
-        it('Test a custom plugin (old fashion)', function (done) {
+        it('Test a custom plugin', function (done) {
             server = module({
                 plugins: {
                     myPlugin: function () {
@@ -73,11 +73,10 @@ describe('[ARCHITECT][RESTIFY]', function () {
             test.object(server).isNotEmpty();
         });
         
-        it('Test a custom plugin (new fashion)', function (done) {
+        it('Test a custom plugin (pre)', function (done) {
             server = module({
                 plugins: {
-                    prehandlers: {},
-                    handlers: {
+                    pre: {
                         myPlugin: function () {
                             return function (req, res, next) {
                                 done();
@@ -108,34 +107,30 @@ describe('[ARCHITECT][RESTIFY]', function () {
 
             test.object(server).isNotEmpty();
         });
-        
-        it('Test a custom plugin (prehandler)', function (done) {
+
+        it('Test a plugin (pre)', function (done) {
             server = module({
                 plugins: {
-                    prehandlers: {
-                        myPlugin: function () {
-                            return function (req, res, next) {
-                                done();
-                                next();
-                            };
-                        }
-                    },
-                    handlers: {}
+                    pre: {
+                        dedupeSlashes: {}
+                    }
                 }
             }, {}, function (err) {
 
                 test.assert.ifError(err);
 
                 server.get({
-                    url: '/'
+                    url: '/hello/jake'
                 }, function (req, res, next) {
+                    done();
                     next();
                 });
 
                 http.get({
+                    path: '/hello//jake',
                     port: server.address().port
                 }, function (res) {
-                    test.number(res.statusCode).is(404);
+                    test.number(res.statusCode).is(200);
                 })
                 .on('error', function (err) {
                     test.assert.ifError(err);
@@ -175,9 +170,7 @@ describe('[ARCHITECT][RESTIFY]', function () {
                     test.assert.ifError(err);
                 });
             });
-
             test.object(server).isNotEmpty();
         });
     });
-
 });

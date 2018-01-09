@@ -1,6 +1,6 @@
 {
   "name": "architect-restify",
-  "version": "0.5.1",
+  "version": "1.0.0",
   "description": "Expose restify server as architect plugin",
   "main": "lib/index.js",
   "scripts": {
@@ -23,10 +23,9 @@
     "url": "https://github.com/bimedia-fr/architect-restify/issues"
   },
   "dependencies": {
-    "listen-interface": "^1.0.1",
-    "lodash": "^4.14.1",
-    "restify": "^4.1.1",
-    "unix-listen": "^0.1.1"
+    "listen-interface": "1.0.1",
+    "restify": "^6.3.4",
+    "unix-listen": "0.1.1"
   },
   "devDependencies": {
     "mocha": "^2.2.1",
