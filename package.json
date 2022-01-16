@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "listen-interface": "1.0.1",
-    "restify": "8.x",
+    "restify": "^8.6.0",
     "unix-listen": "0.1.1"
   },
   "devDependencies": {
