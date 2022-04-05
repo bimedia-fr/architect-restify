@@ -29,7 +29,7 @@
     "unix-listen": "0.1.1"
   },
   "devDependencies": {
-    "mocha": "6.x",
+    "mocha": "^6.2.3",
     "unit.js": "2.x"
   },
   "plugin": {
