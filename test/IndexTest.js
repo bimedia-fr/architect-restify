@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 "use strict";
-var test = require('unit.js');
+var assert = require('assert');
 var module = require('../lib/index');
 var http = require('http');
 
@@ -33,7 +33,7 @@ describe('[ARCHITECT][RESTIFY]', function () {
             server = module({
                 socket: '/tmp/architect-restify.sock'
             }, {}, function (err) {
-                test.assert.ifError(err);
+                assert.ifError(err);
                 done();
             });
         });
@@ -52,29 +52,30 @@ describe('[ARCHITECT][RESTIFY]', function () {
                 }
             }, {}, function (err) {
 
-                test.assert.ifError(err);
+                assert.ifError(err);
 
                 server.get({
                     url: '/'
                 }, function (req, res, next) {
-                    next();
+                    res.send({message: 'ok'});
                 });
 
                 http.get({
                     port: server.address().port
                 }, function (res) {
-                    test.number(res.statusCode).is(404);
+                    assert.strictEqual(200, res.statusCode);
                 })
                 .on('error', function (err) {
-                    test.assert.ifError(err);
+                    assert.ifError(err);
                 });
             });
 
-            test.object(server).isNotEmpty();
+            assert.ok(server);
         });
         
         it('Test a custom plugin (pre)', function (done) {
             server = module({
+                strictNext: false,
                 plugins: {
                     pre: {
                         myPlugin: function () {
@@ -87,25 +88,25 @@ describe('[ARCHITECT][RESTIFY]', function () {
                 }
             }, {}, function (err) {
 
-                test.assert.ifError(err);
+                assert.ifError(err);
 
                 server.get({
                     url: '/'
                 }, function (req, res, next) {
-                    next();
+                    res.send(404)
                 });
 
                 http.get({
                     port: server.address().port
                 }, function (res) {
-                    test.number(res.statusCode).is(404);
+                   assert.strictEqual(404, res.statusCode);
                 })
                 .on('error', function (err) {
-                    test.assert.ifError(err);
+                    assert.ifError(err);
                 });
             });
 
-            test.object(server).isNotEmpty();
+            assert.ok(server);
         });
 
         it('Test a plugin (pre)', function (done) {
@@ -117,11 +118,12 @@ describe('[ARCHITECT][RESTIFY]', function () {
                 }
             }, {}, function (err) {
 
-                test.assert.ifError(err);
+                assert.ifError(err);
 
                 server.get({
                     url: '/hello/jake'
                 }, function (req, res, next) {
+                    res.send(200, 'OK');
                     done();
                     next();
                 });
@@ -130,14 +132,14 @@ describe('[ARCHITECT][RESTIFY]', function () {
                     path: '/hello//jake',
                     port: server.address().port
                 }, function (res) {
-                    test.number(res.statusCode).is(200);
+                    assert.strictEqual(200, res.statusCode);
                 })
                 .on('error', function (err) {
-                    test.assert.ifError(err);
+                    assert.ifError(err);
                 });
             });
 
-            test.object(server).isNotEmpty();
+            assert.ok(server);
         });
         
         it('Test a replacement plugin', function (done) {
@@ -152,11 +154,12 @@ describe('[ARCHITECT][RESTIFY]', function () {
                 }
             }, {}, function (err) {
 
-                test.assert.ifError(err);
+                assert.ifError(err);
 
                 server.get({
                     url: '/'
                 }, function (req, res, next) {
+                    res.send(404)
                     next();
                 });
 
@@ -164,13 +167,13 @@ describe('[ARCHITECT][RESTIFY]', function () {
                     path: '/?foo=bar',
                     port: server.address().port
                 }, function (res) {
-                    test.number(res.statusCode).is(404);
+                    assert.strictEqual(404, res.statusCode);
                 })
                 .on('error', function (err) {
-                    test.assert.ifError(err);
+                    assert.ifError(err);
                 });
             });
-            test.object(server).isNotEmpty();
+            assert.ok(server);
         });
     });
 });
