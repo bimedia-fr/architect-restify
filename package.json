@@ -16,15 +16,19 @@
   ],
   "author": "Jerome Creignou",
   "contributors": [
-    "Guillaume Chauvet"
+    "Guillaume Chauvet",
+    "Sébastien Hus"
   ],
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/bimedia-fr/architect-restify/issues"
   },
+  "engines": {
+    "node": ">=18.15.0"
+  },
   "dependencies": {
     "listen-interface": "1.0.1",
-    "restify": "^8.6.0",
+    "restify": "^11.1.0",
     "restify-errors": "^8.0.2",
     "unix-listen": "0.1.1"
   },
